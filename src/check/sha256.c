@@ -28,7 +28,7 @@
 #endif
 
 #include "check.h"
-
+#include "bswap.h"
 
 // At least on x86, GCC is able to optimize this to a rotate instruction.
 #define rotr_32(num, amount) ((num) >> (amount) | (num) << (32 - (amount)))
