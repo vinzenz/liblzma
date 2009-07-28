@@ -21,10 +21,10 @@ endif
 
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug
-  TARGETDIR  = .
+  TARGETDIR  = lib
   TARGET     = $(TARGETDIR)/liblzma.a
   DEFINES   += -DHAVE_CONFIG_H -DHAVE_STDBOOL_H
-  INCLUDES  += -Icommon -Iapi -Icheck -Idelta -Ilz -Ilzma -Irangecoder -Isimple -Isubblock -Iadd_include
+  INCLUDES  += -Isrc/common -Isrc/api -Isrc/check -Isrc/delta -Isrc/lz -Isrc/lzma -Isrc/rangecoder -Isrc/simple -Isrc/subblock -Isrc/add_include
   CPPFLAGS  += -MMD $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -std=c99
   CXXFLAGS  += $(CFLAGS) 
@@ -38,15 +38,17 @@ ifeq ($(config),debug)
   define PRELINKCMDS
   endef
   define POSTBUILDCMDS
+	@echo Running post-build commands
+	lib.exe -out:lib/lzma.lib -nologo $(OBJECTS)
   endef
 endif
 
 ifeq ($(config),release)
   OBJDIR     = obj/Release
-  TARGETDIR  = .
+  TARGETDIR  = lib
   TARGET     = $(TARGETDIR)/liblzma.a
   DEFINES   += -DHAVE_CONFIG_H -DHAVE_STDBOOL_H
-  INCLUDES  += -Icommon -Iapi -Icheck -Idelta -Ilz -Ilzma -Irangecoder -Isimple -Isubblock -Iadd_include
+  INCLUDES  += -Isrc/common -Isrc/api -Isrc/check -Isrc/delta -Isrc/lz -Isrc/lzma -Isrc/rangecoder -Isrc/simple -Isrc/subblock -Isrc/add_include
   CPPFLAGS  += -MMD $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -std=c99
   CXXFLAGS  += $(CFLAGS) 
@@ -60,6 +62,8 @@ ifeq ($(config),release)
   define PRELINKCMDS
   endef
   define POSTBUILDCMDS
+	@echo Running post-build commands
+	lib.exe -out:lib/lzma.lib -nologo $(OBJECTS)
   endef
 endif
 
@@ -192,214 +196,214 @@ $(GCH): $(PCH)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
 endif
 
-$(OBJDIR)/check.o: check/check.c
+$(OBJDIR)/check.o: src/check/check.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/crc32_fast.o: check/crc32_fast.c
+$(OBJDIR)/crc32_fast.o: src/check/crc32_fast.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/crc32_table.o: check/crc32_table.c
+$(OBJDIR)/crc32_table.o: src/check/crc32_table.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/crc64_fast.o: check/crc64_fast.c
+$(OBJDIR)/crc64_fast.o: src/check/crc64_fast.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/crc64_table.o: check/crc64_table.c
+$(OBJDIR)/crc64_table.o: src/check/crc64_table.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/sha256.o: check/sha256.c
+$(OBJDIR)/sha256.o: src/check/sha256.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/alone_decoder.o: common/alone_decoder.c
+$(OBJDIR)/alone_decoder.o: src/common/alone_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/alone_encoder.o: common/alone_encoder.c
+$(OBJDIR)/alone_encoder.o: src/common/alone_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/auto_decoder.o: common/auto_decoder.c
+$(OBJDIR)/auto_decoder.o: src/common/auto_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_buffer_decoder.o: common/block_buffer_decoder.c
+$(OBJDIR)/block_buffer_decoder.o: src/common/block_buffer_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_buffer_encoder.o: common/block_buffer_encoder.c
+$(OBJDIR)/block_buffer_encoder.o: src/common/block_buffer_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_decoder.o: common/block_decoder.c
+$(OBJDIR)/block_decoder.o: src/common/block_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_encoder.o: common/block_encoder.c
+$(OBJDIR)/block_encoder.o: src/common/block_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_header_decoder.o: common/block_header_decoder.c
+$(OBJDIR)/block_header_decoder.o: src/common/block_header_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_header_encoder.o: common/block_header_encoder.c
+$(OBJDIR)/block_header_encoder.o: src/common/block_header_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/block_util.o: common/block_util.c
+$(OBJDIR)/block_util.o: src/common/block_util.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/common.o: common/common.c
+$(OBJDIR)/common.o: src/common/common.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/easy_buffer_encoder.o: common/easy_buffer_encoder.c
+$(OBJDIR)/easy_buffer_encoder.o: src/common/easy_buffer_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/easy_decoder_memusage.o: common/easy_decoder_memusage.c
+$(OBJDIR)/easy_decoder_memusage.o: src/common/easy_decoder_memusage.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/easy_encoder.o: common/easy_encoder.c
+$(OBJDIR)/easy_encoder.o: src/common/easy_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/easy_encoder_memusage.o: common/easy_encoder_memusage.c
+$(OBJDIR)/easy_encoder_memusage.o: src/common/easy_encoder_memusage.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/easy_preset.o: common/easy_preset.c
+$(OBJDIR)/easy_preset.o: src/common/easy_preset.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_buffer_decoder.o: common/filter_buffer_decoder.c
+$(OBJDIR)/filter_buffer_decoder.o: src/common/filter_buffer_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_buffer_encoder.o: common/filter_buffer_encoder.c
+$(OBJDIR)/filter_buffer_encoder.o: src/common/filter_buffer_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_common.o: common/filter_common.c
+$(OBJDIR)/filter_common.o: src/common/filter_common.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_decoder.o: common/filter_decoder.c
+$(OBJDIR)/filter_decoder.o: src/common/filter_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_encoder.o: common/filter_encoder.c
+$(OBJDIR)/filter_encoder.o: src/common/filter_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_flags_decoder.o: common/filter_flags_decoder.c
+$(OBJDIR)/filter_flags_decoder.o: src/common/filter_flags_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/filter_flags_encoder.o: common/filter_flags_encoder.c
+$(OBJDIR)/filter_flags_encoder.o: src/common/filter_flags_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/index.o: common/index.c
+$(OBJDIR)/index.o: src/common/index.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/index_decoder.o: common/index_decoder.c
+$(OBJDIR)/index_decoder.o: src/common/index_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/index_encoder.o: common/index_encoder.c
+$(OBJDIR)/index_encoder.o: src/common/index_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/index_hash.o: common/index_hash.c
+$(OBJDIR)/index_hash.o: src/common/index_hash.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_buffer_decoder.o: common/stream_buffer_decoder.c
+$(OBJDIR)/stream_buffer_decoder.o: src/common/stream_buffer_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_buffer_encoder.o: common/stream_buffer_encoder.c
+$(OBJDIR)/stream_buffer_encoder.o: src/common/stream_buffer_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_decoder.o: common/stream_decoder.c
+$(OBJDIR)/stream_decoder.o: src/common/stream_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_encoder.o: common/stream_encoder.c
+$(OBJDIR)/stream_encoder.o: src/common/stream_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_flags_common.o: common/stream_flags_common.c
+$(OBJDIR)/stream_flags_common.o: src/common/stream_flags_common.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_flags_decoder.o: common/stream_flags_decoder.c
+$(OBJDIR)/stream_flags_decoder.o: src/common/stream_flags_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/stream_flags_encoder.o: common/stream_flags_encoder.c
+$(OBJDIR)/stream_flags_encoder.o: src/common/stream_flags_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/vli_decoder.o: common/vli_decoder.c
+$(OBJDIR)/vli_decoder.o: src/common/vli_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/vli_encoder.o: common/vli_encoder.c
+$(OBJDIR)/vli_encoder.o: src/common/vli_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/vli_size.o: common/vli_size.c
+$(OBJDIR)/vli_size.o: src/common/vli_size.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/delta_common.o: delta/delta_common.c
+$(OBJDIR)/delta_common.o: src/delta/delta_common.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/delta_decoder.o: delta/delta_decoder.c
+$(OBJDIR)/delta_decoder.o: src/delta/delta_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/delta_encoder.o: delta/delta_encoder.c
+$(OBJDIR)/delta_encoder.o: src/delta/delta_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lz_decoder.o: lz/lz_decoder.c
+$(OBJDIR)/lz_decoder.o: src/lz/lz_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lz_encoder.o: lz/lz_encoder.c
+$(OBJDIR)/lz_encoder.o: src/lz/lz_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lz_encoder_mf.o: lz/lz_encoder_mf.c
+$(OBJDIR)/lz_encoder_mf.o: src/lz/lz_encoder_mf.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/fastpos_table.o: lzma/fastpos_table.c
+$(OBJDIR)/fastpos_table.o: src/lzma/fastpos_table.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma2_decoder.o: lzma/lzma2_decoder.c
+$(OBJDIR)/lzma2_decoder.o: src/lzma/lzma2_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma2_encoder.o: lzma/lzma2_encoder.c
+$(OBJDIR)/lzma2_encoder.o: src/lzma/lzma2_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma_decoder.o: lzma/lzma_decoder.c
+$(OBJDIR)/lzma_decoder.o: src/lzma/lzma_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma_encoder.o: lzma/lzma_encoder.c
+$(OBJDIR)/lzma_encoder.o: src/lzma/lzma_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma_encoder_optimum_fast.o: lzma/lzma_encoder_optimum_fast.c
+$(OBJDIR)/lzma_encoder_optimum_fast.o: src/lzma/lzma_encoder_optimum_fast.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma_encoder_optimum_normal.o: lzma/lzma_encoder_optimum_normal.c
+$(OBJDIR)/lzma_encoder_optimum_normal.o: src/lzma/lzma_encoder_optimum_normal.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzma_encoder_presets.o: lzma/lzma_encoder_presets.c
+$(OBJDIR)/lzma_encoder_presets.o: src/lzma/lzma_encoder_presets.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/price_table.o: rangecoder/price_table.c
+$(OBJDIR)/price_table.o: src/rangecoder/price_table.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/arm.o: simple/arm.c
+$(OBJDIR)/arm.o: src/simple/arm.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/armthumb.o: simple/armthumb.c
+$(OBJDIR)/armthumb.o: src/simple/armthumb.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ia64.o: simple/ia64.c
+$(OBJDIR)/ia64.o: src/simple/ia64.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/powerpc.o: simple/powerpc.c
+$(OBJDIR)/powerpc.o: src/simple/powerpc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/simple_coder.o: simple/simple_coder.c
+$(OBJDIR)/simple_coder.o: src/simple/simple_coder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/simple_decoder.o: simple/simple_decoder.c
+$(OBJDIR)/simple_decoder.o: src/simple/simple_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/simple_encoder.o: simple/simple_encoder.c
+$(OBJDIR)/simple_encoder.o: src/simple/simple_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/sparc.o: simple/sparc.c
+$(OBJDIR)/sparc.o: src/simple/sparc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/x86.o: simple/x86.c
+$(OBJDIR)/x86.o: src/simple/x86.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/subblock_decoder.o: subblock/subblock_decoder.c
+$(OBJDIR)/subblock_decoder.o: src/subblock/subblock_decoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/subblock_decoder_helper.o: subblock/subblock_decoder_helper.c
+$(OBJDIR)/subblock_decoder_helper.o: src/subblock/subblock_decoder_helper.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/subblock_encoder.o: subblock/subblock_encoder.c
+$(OBJDIR)/subblock_encoder.o: src/subblock/subblock_encoder.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
 

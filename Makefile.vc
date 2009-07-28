@@ -1,13 +1,14 @@
 # Sample makefile
 
-!include <win32.mak>
+#!include <win32.mak>
 
+TARGET=lib/lzma.lib
 OBJDIR=obj/Debug
+LINKTOOL=Lib.exe
 
-all: lzma.lib
+all: $(TARGET)
 
-OBJECTS = \
-	$(OBJDIR)/check.o \
+OBJECTS = $(OBJDIR)/check.o \
 	$(OBJDIR)/crc32_fast.o \
 	$(OBJDIR)/crc32_table.o \
 	$(OBJDIR)/crc64_fast.o \
@@ -76,9 +77,9 @@ OBJECTS = \
 	$(OBJDIR)/x86.o \
 	$(OBJDIR)/subblock_decoder.o \
 	$(OBJDIR)/subblock_decoder_helper.o \
-	$(OBJDIR)/subblock_encoder.o \
+	$(OBJDIR)/subblock_encoder.o
 
 
-lzma.lib: $(OBJECTS) 
-  Lib $(OBJECTS) -machine:X86 -nologo -out:lzma.lib
+$(TARGET): $(OBJECTS) 
+  $(LINKTOOL) $(OBJECTS) -out:$(TARGET) -machine:X86 -nologo 
 
